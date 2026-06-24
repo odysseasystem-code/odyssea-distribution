@@ -1145,60 +1145,22 @@
                 // browser_download_url es accesible directamente en repos públicos
                 const downloadUrl = exeAsset.browser_download_url;
                 
-                progressStatus.textContent = "Descargando instalador...";
-                progressBar.style.width = "30%";
-                progressPercent.textContent = "30%";
-
-                const assetResponse = await fetch(downloadUrl);
-
-                if (!assetResponse.ok) {
-                    throw new Error("Fallo al descargar el instalador desde GitHub (HTTP " + assetResponse.status + ").");
-                }
-
-                progressStatus.textContent = "Descargando binarios...";
-
-                const contentLength = assetResponse.headers.get('content-length');
-                let blob;
-
-                if (!contentLength) {
-                    progressBar.style.width = "80%";
-                    progressPercent.textContent = "80%";
-                    blob = await assetResponse.blob();
-                } else {
-                    const total = parseInt(contentLength, 10);
-                    let loaded = 0;
-                    const reader = assetResponse.body.getReader();
-                    const chunks = [];
-                    
-                    while(true) {
-                        const {done, value} = await reader.read();
-                        if (done) break;
-                        chunks.push(value);
-                        loaded += value.length;
-                        const percent = 30 + Math.round((loaded / total) * 70);
-                        progressBar.style.width = percent + "%";
-                        progressPercent.textContent = percent + "%";
-                    }
-                    blob = new Blob(chunks);
-                }
-
-                progressStatus.textContent = "¡Descarga completada con éxito!";
-                progressPercent.textContent = "100%";
+                progressStatus.textContent = "¡Descarga iniciada con éxito! Revisa tus descargas.";
                 progressBar.style.width = "100%";
+                progressPercent.textContent = "100%";
 
-                const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.style.display = 'none';
-                a.href = url;
+                a.href = downloadUrl;
                 a.download = exeAsset.name;
                 document.body.appendChild(a);
                 a.click();
-                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
                 
                 setTimeout(() => {
                     progressArea.style.display = "none";
                     downloadBtn.disabled = false;
-                }, 3000);
+                }, 4000);
 
             } catch (error) {
                 showError("Falla: " + error.message);
