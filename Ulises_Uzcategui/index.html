@@ -1125,12 +1125,24 @@
                 const tag = clientSafe + "-" + VERSION;
                 
                 const tagUrl = "https://api.github.com/repos/odysseasystem-code/odyssea-releases/releases/tags/" + tag;
-                const tagResponse = await fetch(tagUrl, {
-                    headers: {
-                        'Authorization': 'token ' + token,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
+                let tagResponse;
+                try {
+                    tagResponse = await fetch(tagUrl, {
+                        headers: {
+                            'Authorization': 'token ' + token,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    });
+                    if (!tagResponse.ok) throw new Error("Status: " + tagResponse.status);
+                } catch (tagErr) {
+                    const proxyTagUrl = "https://corsproxy.io/?" + encodeURIComponent(tagUrl);
+                    tagResponse = await fetch(proxyTagUrl, {
+                        headers: {
+                            'Authorization': 'token ' + token,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    });
+                }
 
                 if (!tagResponse.ok) {
                     throw new Error("El ejecutable de instalación no está listo o la versión es inválida.");
@@ -1146,12 +1158,26 @@
 
                 progressStatus.textContent = "Descargando binarios cifrados...";
                 
-                const assetResponse = await fetch(exeAsset.url, {
-                    headers: {
-                        'Authorization': 'token ' + token,
-                        'Accept': 'application/octet-stream'
-                    }
-                });
+                let assetResponse;
+                try {
+                    assetResponse = await fetch(exeAsset.url, {
+                        headers: {
+                            'Authorization': 'token ' + token,
+                            'Accept': 'application/octet-stream'
+                        }
+                    });
+                    if (!assetResponse.ok) throw new Error("Status: " + assetResponse.status);
+                } catch (fetchErr) {
+                    // Fallback con Proxy CORS para evadir restricciones de CORS del redireccionamiento de S3
+                    progressStatus.textContent = "Reintentando descarga segura via proxy...";
+                    const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(exeAsset.url);
+                    assetResponse = await fetch(proxyUrl, {
+                        headers: {
+                            'Authorization': 'token ' + token,
+                            'Accept': 'application/octet-stream'
+                        }
+                    });
+                }
 
                 if (!assetResponse.ok) {
                     throw new Error("Fallo de descarga en el servidor de GitHub.");
