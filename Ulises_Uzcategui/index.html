@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descarga Oficial de Odyssea System — Proasem, C.A</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-base: #007EA7;
+            --primary-hover: #80CED7;
+            --primary-active: #003249;
+            --primary-light: #E0F4FB;
+            --accent: #FF9F1C;
+            --bg-app: #F0F4F8;
+            --surface: #FFFFFF;
+            --border: #CCDBDC;
+            --text-main: #003249;
+            --text-secondary: #536B78;
+            --success: #2A9D8F;
+            --error: #E63946;
+            --shadow: 0 4px 15px rgba(0, 50, 73, 0.08);
+            --shadow-hover: 0 8px 25px rgba(0, 50, 73, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-app);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 580px;
+            width: 100%;
+            margin: 20px auto;
+        }
+
+        /* Header Estilo Odyssea */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .logo-svg {
+            width: 36px;
+            height: 36px;
+            fill: var(--primary-base);
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        .brand-title {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: var(--primary-active);
+        }
+
+        /* Tarjeta Estilo OdysseaCard */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-top-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-base), var(--accent));
+        }
+
+        .client-tag {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-active);
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .badge-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-version {
+            background-color: var(--primary-light);
+            color: var(--primary-base);
+        }
+
+        .badge-status {
+            background-color: #E6F4EA;
+            color: var(--success);
+        }
+
+        /* Sección de instrucciones */
+        .instructions {
+            background-color: var(--bg-app);
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            border-left: 3px solid var(--primary-base);
+        }
+
+        .instructions p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .instructions ol {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-left: 20px;
+            line-height: 1.6;
+        }
+
+        /* Inputs Estilo OdysseaInput */
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .input-field {
+            width: 100%;
+            height: 48px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0 16px;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--primary-active);
+            background-color: var(--bg-app);
+            transition: border-color 0.2s ease, box-shadow 0.2s;
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: var(--primary-base);
+            box-shadow: 0 0 0 3px rgba(0, 126, 167, 0.15);
+            background-color: var(--surface);
+        }
+
+        .input-field.error {
+            border-color: var(--error);
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.15);
+        }
+
+        .error-message {
+            font-size: 12px;
+            color: var(--error);
+            display: none;
+            align-items: center;
+            gap: 4px;
+            font-weight: 500;
+        }
+
+        /* Botón Estilo OdysseaButton */
+        .btn {
+            width: 100%;
+            height: 48px;
+            background-color: var(--primary-base);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(0, 126, 167, 0.2);
+        }
+
+        .btn:hover {
+            background-color: var(--primary-active);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn:disabled {
+            background-color: var(--border);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Barra de progreso */
+        .progress-container {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .progress-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary-base);
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 8px;
+            background-color: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            width: 0%;
+            height: 100%;
+            background-color: var(--success);
+            transition: width 0.1s ease;
+        }
+
+        /* Changelog y detalles */
+        .info-section {
+            margin-top: 24px;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+
+        .info-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .changelog-list {
+            list-style-type: none;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .changelog-list li {
+            position: relative;
+            padding-left: 18px;
+        }
+
+        .changelog-list li::before {
+            content: "•";
+            position: absolute;
+            left: 4px;
+            color: var(--primary-base);
+            font-weight: bold;
+        }
+
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .requirement-card {
+            background-color: var(--bg-app);
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 11px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .requirement-card strong {
+            color: var(--primary-active);
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        /* Animaciones */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header class="header">
+        <svg class="logo-svg" viewBox="0 0 24 24">
+            <!-- Compass / Ship Wheel Icon -->
+            <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z"/>
+        </svg>
+        <span class="brand-title">ODYSSEA ENTERPRISE</span>
+    </header>
+
+    <main class="card">
+        <div class="card-top-bar"></div>
+        <span class="client-tag">Portal de Descarga Oficial</span>
+        <h1 id="welcome-text">Preparado para: Proasem, C.A</h1>
+        
+        <div class="badge-row">
+            <span class="badge badge-version">Versión v0.0.5</span>
+            <span class="badge badge-status">Verificado</span>
+        </div>
+
+        <div class="instructions">
+            <p>Siga estos pasos para instalar:</p>
+            <ol>
+                <li>Instale el motor de base de datos PostgreSQL 18.3 si actúa como Servidor.</li>
+                <li>Ingrese su <strong>Código de Acceso Digital</strong> de 8 dígitos a continuación.</li>
+                <li>Presione el botón para descargar de forma segura su instalador personalizado.</li>
+            </ol>
+        </div>
+
+        <div class="form-group">
+            <label class="input-label" for="access-code">Código de Acceso Digital</label>
+            <input type="text" id="access-code" class="input-field" placeholder="Ingrese código de 8 dígitos" maxlength="12" autocomplete="off">
+            <div id="error-lbl" class="error-message">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span id="error-txt">Código de acceso incorrecto o expirado</span>
+            </div>
+        </div>
+
+        <button id="download-btn" class="btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Desbloquear y Descargar
+        </button>
+
+        <div id="progress-area" class="progress-container">
+            <div class="progress-text">
+                <span id="progress-status">Descargando...</span>
+                <span id="progress-percent">0%</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div id="progress-bar" class="progress-bar-fill"></div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <div class="info-title">Novedades de esta versión:</div>
+            <ul class="changelog-list">
+                <li>Cambios en forma de licenciamiento</li>
+            </ul>
+        </div>
+
+        <div class="info-section">
+            <div class="info-title">Requisitos Mínimos:</div>
+            <div class="requirements-grid">
+                <div class="requirement-card">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                    <div>
+                        <strong>Windows 10/11</strong>
+                        <span>Arquitectura x64</span>
+                    </div>
+                </div>
+                <div class="requirement-card">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                        <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"></path>
+                    </svg>
+                    <div>
+                        <strong>PostgreSQL 18.3+</strong>
+                        <span><a href="https://www.postgresql.org/download/windows/" target="_blank" style="color: var(--primary-base); text-decoration: none;">Descargar aquí</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        Desarrollado y Distribuido por Odyssea System &copy; 2026. Todos los derechos reservados.
+    </footer>
+</div>
+
+<script>
+    // Configuración cifrada inyectada desde Control Center
+    const CIPHERTEXT = "b73cece73e42dee1a814c26c7e7955233fdfd6ab4ae06f212d35c52198be9ddc2b8c3d8fb8b1cbe62d94ba51d0af5f28f988ff211a73a9d5a0ee081489f55ecf7fbd6046dd1441d2d6805489fc2b8288a0d2d2527c1970594c96891196433d8d2c152604787960c6d0cf8311d0cda806";
+    const CLIENT_ID = "Ulises Uzcategui";
+    const VERSION = "v0.0.5";
+
+    // Algoritmo de descifrado RC4 en JS
+    function rc4DecryptFromHex(key, hexStr) {
+        var bytes = [];
+        for (var c = 0; c < hexStr.length; c += 2) {
+            bytes.push(parseInt(hexStr.substr(c, 2), 16));
+        }
+        
+        var S = [], j = 0, x, res = '';
+        for (var i = 0; i < 256; i++) {
+            S[i] = i;
+        }
+        for (var i = 0; i < 256; i++) {
+            j = (j + S[i] + key.charCodeAt(i % key.length)) % 256;
+            x = S[i]; S[i] = S[j]; S[j] = x;
+        }
+        i = 0; j = 0;
+        for (var y = 0; y < bytes.length; y++) {
+            i = (i + 1) % 256;
+            j = (j + S[i]) % 256;
+            x = S[i]; S[i] = S[j]; S[j] = x;
+            res += String.fromCharCode(bytes[y] ^ S[(S[i] + S[j]) % 256]);
+        }
+        return res;
+    }
+
+    const inputCode = document.getElementById("access-code");
+    const downloadBtn = document.getElementById("download-btn");
+    const errorLbl = document.getElementById("error-lbl");
+    const errorTxt = document.getElementById("error-txt");
+    const progressArea = document.getElementById("progress-area");
+    const progressBar = document.getElementById("progress-bar");
+    const progressPercent = document.getElementById("progress-percent");
+    const progressStatus = document.getElementById("progress-status");
+    const card = document.querySelector(".card");
+
+    function showError(msg) {
+        errorTxt.textContent = msg;
+        errorLbl.style.display = "flex";
+        inputCode.classList.add("error");
+        card.classList.add("shake");
+        setTimeout(() => {
+            card.classList.remove("shake");
+        }, 400);
+    }
+
+    function clearError() {
+        errorLbl.style.display = "none";
+        inputCode.classList.remove("error");
+    }
+
+    inputCode.addEventListener("input", clearError);
+    inputCode.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            downloadBtn.click();
+        }
+    });
+
+    downloadBtn.addEventListener("click", async () => {
+        const code = inputCode.value.trim().toUpperCase();
+        if (!code) {
+            showError("Debe ingresar el código de acceso");
+            return;
+        }
+
+        clearError();
+        downloadBtn.disabled = true;
+        
+        // Intentar desencriptar el token
+        const decrypted = rc4DecryptFromHex(code, CIPHERTEXT);
+        const prefix = "ODYSSEA_DECRYPT_OK_";
+        
+        if (!decrypted.startsWith(prefix)) {
+            showError("Código de acceso incorrecto o expirado");
+            downloadBtn.disabled = false;
+            return;
+        }
+
+        const token = decrypted.substring(prefix.length);
+        
+        // Iniciar flujo de descarga de release privada de GitHub
+        try {
+            progressArea.style.display = "block";
+            progressStatus.textContent = "Conectando con el servidor...";
+            progressPercent.textContent = "0%";
+            progressBar.style.width = "0%";
+
+            const clientSafe = CLIENT_ID.replace(/ /g, "_");
+            const tag = clientSafe + "-" + VERSION;
+            
+            // 1. Obtener detalles del Release
+            const tagUrl = "https://api.github.com/repos/odysseasystem-code/odyssea-releases/releases/tags/" + tag;
+            const tagResponse = await fetch(tagUrl, {
+                headers: {
+                    'Authorization': 'token ' + token,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+
+            if (!tagResponse.ok) {
+                throw new Error("No se encontró el instalador. La release podría no estar lista.");
+            }
+
+            const releaseData = await tagResponse.json();
+            const assets = releaseData.assets || [];
+            
+            // Buscar instalador exe
+            const exeAsset = assets.find(a => a.name.endsWith(".exe"));
+            if (!exeAsset) {
+                throw new Error("No se encontró ningún archivo ejecutable en el release.");
+            }
+
+            progressStatus.textContent = "Descargando instalador...";
+            
+            // 2. Descargar el binario con soporte de progreso
+            const assetResponse = await fetch(exeAsset.url, {
+                headers: {
+                    'Authorization': 'token ' + token,
+                    'Accept': 'application/octet-stream'
+                }
+            });
+
+            if (!assetResponse.ok) {
+                throw new Error("Error en la descarga del archivo.");
+            }
+
+            const contentLength = assetResponse.headers.get('content-length');
+            let blob;
+
+            if (!contentLength) {
+                // Fallback sin progreso
+                blob = await assetResponse.blob();
+            } else {
+                const total = parseInt(contentLength, 10);
+                let loaded = 0;
+                const reader = assetResponse.body.getReader();
+                const chunks = [];
+                
+                while(true) {
+                    const {done, value} = await reader.read();
+                    if (done) break;
+                    chunks.push(value);
+                    loaded += value.length;
+                    const percent = Math.round((loaded / total) * 100);
+                    progressBar.style.width = percent + "%";
+                    progressPercent.textContent = percent + "%";
+                }
+                blob = new Blob(chunks);
+            }
+
+            progressStatus.textContent = "Completado";
+            progressPercent.textContent = "100%";
+            progressBar.style.width = "100%";
+
+            // 3. Trigger download
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = exeAsset.name;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            
+            setTimeout(() => {
+                progressArea.style.display = "none";
+                downloadBtn.disabled = false;
+            }, 3000);
+
+        } catch (error) {
+            showError("Falla de descarga: " + error.message);
+            progressArea.style.display = "none";
+            downloadBtn.disabled = false;
+        }
+    });
+</script>
+
+</body>
+</html>
