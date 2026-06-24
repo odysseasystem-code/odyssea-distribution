@@ -1113,8 +1113,6 @@
                 return;
             }
 
-            const token = decrypted.substring(prefix.length).trim();
-            
             try {
                 progressArea.style.display = "block";
                 progressStatus.textContent = "Conectando al repositorio...";
@@ -1124,28 +1122,16 @@
                 const clientSafe = CLIENT_ID.replace(/ /g, "_");
                 const tag = clientSafe + "-" + VERSION;
                 
+                // Repositorio público: consultar API sin autenticación
                 const tagUrl = "https://api.github.com/repos/odysseasystem-code/odyssea-releases/releases/tags/" + tag;
-                let tagResponse;
-                try {
-                    tagResponse = await fetch(tagUrl, {
-                        headers: {
-                            'Authorization': 'token ' + token,
-                            'Accept': 'application/vnd.github.v3+json'
-                        }
-                    });
-                    if (!tagResponse.ok) throw new Error("Status: " + tagResponse.status);
-                } catch (tagErr) {
-                    const proxyTagUrl = "https://corsproxy.io/?" + encodeURIComponent(tagUrl);
-                    tagResponse = await fetch(proxyTagUrl, {
-                        headers: {
-                            'Authorization': 'token ' + token,
-                            'Accept': 'application/vnd.github.v3+json'
-                        }
-                    });
-                }
+                const tagResponse = await fetch(tagUrl, {
+                    headers: {
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
 
                 if (!tagResponse.ok) {
-                    throw new Error("El ejecutable de instalación no está listo o la versión es inválida.");
+                    throw new Error("El ejecutable de instalación no está listo o la versión es inválida (HTTP " + tagResponse.status + ").");
                 }
 
                 const releaseData = await tagResponse.json();
@@ -1156,39 +1142,27 @@
                     throw new Error("No se encontró instalador .exe publicado para esta versión.");
                 }
 
-                progressStatus.textContent = "Descargando binarios cifrados...";
+                // browser_download_url es accesible directamente en repos públicos
+                const downloadUrl = exeAsset.browser_download_url;
                 
-                let assetResponse;
-                try {
-                    assetResponse = await fetch(exeAsset.url, {
-                        headers: {
-                            'Authorization': 'token ' + token,
-                            'Accept': 'application/octet-stream'
-                        }
-                    });
-                    if (!assetResponse.ok) throw new Error("Status: " + assetResponse.status);
-                } catch (fetchErr) {
-                    // Fallback con Proxy CORS para evadir restricciones de CORS del redireccionamiento de S3
-                    // Usamos api.allorigins.win/raw, el cual al estar bajo Cloudflare Workers remueve
-                    // automáticamente la cabecera Authorization al seguir la redirección 302 a S3.
-                    progressStatus.textContent = "Reintentando descarga segura via proxy...";
-                    const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(exeAsset.url);
-                    assetResponse = await fetch(proxyUrl, {
-                        headers: {
-                            'Authorization': 'token ' + token,
-                            'Accept': 'application/octet-stream'
-                        }
-                    });
-                }
+                progressStatus.textContent = "Descargando instalador...";
+                progressBar.style.width = "30%";
+                progressPercent.textContent = "30%";
+
+                const assetResponse = await fetch(downloadUrl);
 
                 if (!assetResponse.ok) {
-                    throw new Error("Fallo de descarga en el servidor de GitHub.");
+                    throw new Error("Fallo al descargar el instalador desde GitHub (HTTP " + assetResponse.status + ").");
                 }
+
+                progressStatus.textContent = "Descargando binarios...";
 
                 const contentLength = assetResponse.headers.get('content-length');
                 let blob;
 
                 if (!contentLength) {
+                    progressBar.style.width = "80%";
+                    progressPercent.textContent = "80%";
                     blob = await assetResponse.blob();
                 } else {
                     const total = parseInt(contentLength, 10);
@@ -1201,7 +1175,7 @@
                         if (done) break;
                         chunks.push(value);
                         loaded += value.length;
-                        const percent = Math.round((loaded / total) * 100);
+                        const percent = 30 + Math.round((loaded / total) * 70);
                         progressBar.style.width = percent + "%";
                         progressPercent.textContent = percent + "%";
                     }
