@@ -1169,13 +1169,13 @@
                     if (!assetResponse.ok) throw new Error("Status: " + assetResponse.status);
                 } catch (fetchErr) {
                     // Fallback con Proxy CORS para evadir restricciones de CORS del redireccionamiento de S3
-                    // Para evitar que el proxy propague la cabecera Authorization a S3 (lo que causa error 400),
-                    // pasamos el token directamente como credencial Basic Auth en la URL.
+                    // Usamos api.allorigins.win/raw, el cual al estar bajo Cloudflare Workers remueve
+                    // automáticamente la cabecera Authorization al seguir la redirección 302 a S3.
                     progressStatus.textContent = "Reintentando descarga segura via proxy...";
-                    const authenticatedUrl = exeAsset.url.replace("https://", `https://x-access-token:${token}@`);
-                    const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(authenticatedUrl);
+                    const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(exeAsset.url);
                     assetResponse = await fetch(proxyUrl, {
                         headers: {
+                            'Authorization': 'token ' + token,
                             'Accept': 'application/octet-stream'
                         }
                     });
