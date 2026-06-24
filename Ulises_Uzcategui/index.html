@@ -1113,7 +1113,7 @@
                 return;
             }
 
-            const token = decrypted.substring(prefix.length);
+            const token = decrypted.substring(prefix.length).trim();
             
             try {
                 progressArea.style.display = "block";
