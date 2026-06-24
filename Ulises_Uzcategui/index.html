@@ -1169,11 +1169,13 @@
                     if (!assetResponse.ok) throw new Error("Status: " + assetResponse.status);
                 } catch (fetchErr) {
                     // Fallback con Proxy CORS para evadir restricciones de CORS del redireccionamiento de S3
+                    // Para evitar que el proxy propague la cabecera Authorization a S3 (lo que causa error 400),
+                    // pasamos el token directamente como credencial Basic Auth en la URL.
                     progressStatus.textContent = "Reintentando descarga segura via proxy...";
-                    const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(exeAsset.url);
+                    const authenticatedUrl = exeAsset.url.replace("https://", `https://x-access-token:${token}@`);
+                    const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(authenticatedUrl);
                     assetResponse = await fetch(proxyUrl, {
                         headers: {
-                            'Authorization': 'token ' + token,
                             'Accept': 'application/octet-stream'
                         }
                     });
