@@ -1099,38 +1099,43 @@
             }
         });
 
-        // Consultar estado de descargas desde Supabase
+        // Consultar estado de descargas desde Supabase via RPC (no SELECT directo por RLS)
         async function fetchDownloadStatus() {
             if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
                 console.log("Supabase config missing");
                 return;
             }
             try {
-                const url = SUPABASE_URL + "/rest/v1/clients?id=eq." + encodeURIComponent(CLIENT_ID) + "&select=max_downloads,downloads_used";
+                const url = SUPABASE_URL + "/rest/v1/rpc/get_download_status";
                 const response = await fetch(url, {
-                    method: "GET",
+                    method: "POST",
                     headers: {
+                        "Content-Type": "application/json",
                         "apikey": SUPABASE_ANON_KEY,
                         "Authorization": "Bearer " + SUPABASE_ANON_KEY
-                    }
+                    },
+                    body: JSON.stringify({ "p_client_id": CLIENT_ID })
                 });
                 if (response.ok) {
-                    const data = await response.json();
-                    if (data && data.length > 0) {
-                        const client = data[0];
-                        const max_dl = client.max_downloads || 3;
-                        const used_dl = client.downloads_used || 0;
-                        const remaining = Math.max(0, max_dl - used_dl);
+                    const result = await response.json();
+                    if (result && result.status === "success") {
+                        const max_dl = result.max_downloads || 3;
+                        const used_dl = result.downloads_used || 0;
+                        const remaining = result.remaining || 0;
                         
                         const remainingBadge = document.getElementById("remaining-downloads-text");
                         if (remainingBadge) {
                             remainingBadge.textContent = "Descargas disponibles: " + remaining + " de " + max_dl;
+                            remainingBadge.style.color = remaining <= 0 ? "var(--error)" : "var(--primary-base)";
                         }
                         
                         if (remaining <= 0) {
                             downloadBtn.disabled = true;
                             showError("El límite de descargas seguras para esta versión ha sido alcanzado. Contacte a soporte.");
                             inputCode.disabled = true;
+                        } else {
+                            downloadBtn.disabled = false;
+                            inputCode.disabled = false;
                         }
                     }
                 }
@@ -1160,55 +1165,51 @@
                 return;
             }
 
-            // Descarga controlada por stream de bytes para evitar descontar cupos en caso de fallas de red
+            // Validar si es un reintento en el mismo navegador/máquina en el transcurso del día
+            // (Comentario del usuario #3: no descontar cupos en fallos de red/reintentos del mismo día)
+            const cachedUrl = localStorage.getItem("dl_url_" + CLIENT_ID);
+            const cachedCode = localStorage.getItem("dl_code_" + CLIENT_ID);
+            
+            if (cachedCode === code && cachedUrl) {
+                progressArea.style.display = "block";
+                progressStatus.textContent = "Reintentando descarga segura del instalador...";
+                progressBar.style.width = "50%";
+                progressPercent.textContent = "50%";
+                
+                try {
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = cachedUrl;
+                    a.download = cachedUrl.substring(cachedUrl.lastIndexOf('/') + 1);
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    
+                    progressBar.style.width = "100%";
+                    progressPercent.textContent = "100%";
+                    progressStatus.textContent = "¡Descarga iniciada con éxito! Revisa tus descargas.";
+                    
+                    setTimeout(() => {
+                        progressArea.style.display = "none";
+                        downloadBtn.disabled = false;
+                    }, 3000);
+                    return;
+                } catch (cachedErr) {
+                    console.warn("Falla en descarga cacheada:", cachedErr);
+                    // Si falla el cache, continuará con el flujo normal de red
+                }
+            }
+
+            // Flujo normal: Llamar a Supabase para autorizar y obtener la URL de descarga segura
             try {
                 progressArea.style.display = "block";
-                progressStatus.textContent = "Iniciando descarga segura...";
-                progressPercent.textContent = "0%";
-                progressBar.style.width = "0%";
+                progressStatus.textContent = "Autorizando descarga digital segura...";
+                progressBar.style.width = "30%";
+                progressPercent.textContent = "30%";
 
-                const clientSafe = CLIENT_ID.replace(/ /g, "_");
-                const versionClean = VERSION.replace("v", "");
-                const installerName = "Odyssea_" + clientSafe + "_v" + versionClean + "_Setup.exe";
-                const tag = clientSafe + "-" + VERSION;
-                const downloadUrl = "https://github.com/odysseasystem-code/odyssea-releases/releases/download/" + tag + "/" + installerName;
+                let registerSuccess = false;
+                let downloadUrl = "";
 
-                // 1. Descargar los bytes en memoria mediante fetch stream
-                const response = await fetch(downloadUrl);
-                if (!response.ok) {
-                    throw new Error("No se pudo obtener el instalador de los servidores de release.");
-                }
-
-                const contentLength = response.headers.get('content-length');
-                const totalBytes = contentLength ? parseInt(contentLength, 10) : 0;
-                let downloadedBytes = 0;
-
-                const reader = response.body.getReader();
-                const chunks = [];
-
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) {
-                        break;
-                    }
-                    chunks.push(value);
-                    downloadedBytes += value.length;
-                    
-                    if (totalBytes > 0) {
-                        const pct = Math.round((downloadedBytes / totalBytes) * 100);
-                        progressPercent.textContent = pct + "%";
-                        progressBar.style.width = pct + "%";
-                        progressStatus.textContent = "Descargando instalador (" + (downloadedBytes / (1024*1024)).toFixed(1) + " MB)...";
-                    }
-                }
-
-                // 2. Crear Blob de los bytes completos
-                const blob = new Blob(chunks, { type: "application/octet-stream" });
-
-                // 3. Si la descarga fue 100% exitosa, registrar en Supabase
-                progressStatus.textContent = "Registrando firma de descarga segura...";
-                
-                let registerSuccess = true;
                 if (SUPABASE_URL && SUPABASE_ANON_KEY) {
                     try {
                         const rpcUrl = SUPABASE_URL + "/rest/v1/rpc/authorize_download";
@@ -1216,7 +1217,8 @@
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
-                                "apikey": SUPABASE_ANON_KEY
+                                "apikey": SUPABASE_ANON_KEY,
+                                "Authorization": "Bearer " + SUPABASE_ANON_KEY
                             },
                             body: JSON.stringify({
                                 "p_client_id": CLIENT_ID,
@@ -1226,51 +1228,61 @@
                         
                         if (rpcResp.ok) {
                             const rpcResult = await rpcResp.json();
-                            if (rpcResult && rpcResult.status !== "success") {
-                                registerSuccess = false;
+                            if (rpcResult && rpcResult.status === "success") {
+                                registerSuccess = true;
+                                downloadUrl = rpcResult.download_url;
+                            } else {
                                 showError(rpcResult.message || "La descarga no pudo ser autorizada.");
                             }
                         } else {
                             const errBody = await rpcResp.json().catch(() => ({}));
-                            registerSuccess = false;
                             showError(errBody.message || "El portal no pudo autorizar la descarga.");
                         }
                     } catch (sbErr) {
                         console.error("Supabase error:", sbErr);
-                        registerSuccess = false;
                         showError("Error de comunicación de red segura. Intente de nuevo.");
                     }
+                } else {
+                    // Fallback local: Si no hay Supabase configurado, construir la URL de GitHub
+                    registerSuccess = true;
+                    const clientSafe = CLIENT_ID.replace(/ /g, "_");
+                    const versionClean = VERSION.replace("v", "");
+                    const installerName = "Odyssea_" + clientSafe + "_v" + versionClean + "_Setup.exe";
+                    const tag = clientSafe + "-" + VERSION;
+                    downloadUrl = "https://github.com/odysseasystem-code/odyssea-releases/releases/download/" + tag + "/" + installerName;
                 }
 
-                if (!registerSuccess) {
+                if (!registerSuccess || !downloadUrl) {
                     progressArea.style.display = "none";
                     downloadBtn.disabled = false;
                     return;
                 }
 
-                // 4. Iniciar guardado nativo del archivo
-                progressStatus.textContent = "¡Descarga completada! Guardando instalador...";
+                // Guardar en cache local del navegador para permitir reintentos ilimitados el mismo día sin descontar cupos
+                localStorage.setItem("dl_url_" + CLIENT_ID, downloadUrl);
+                localStorage.setItem("dl_code_" + CLIENT_ID, code);
+
+                // 4. Iniciar la descarga clásica nativa (sin restricciones CORS de fetch AJAX)
+                progressStatus.textContent = "¡Descarga autorizada! Iniciando descarga...";
                 progressBar.style.width = "100%";
                 progressPercent.textContent = "100%";
 
                 const a = document.createElement('a');
                 a.style.display = 'none';
-                const blobUrl = window.URL.createObjectURL(blob);
-                a.href = blobUrl;
-                a.download = installerName;
+                a.href = downloadUrl;
+                a.download = downloadUrl.substring(downloadUrl.lastIndexOf('/') + 1);
                 document.body.appendChild(a);
                 a.click();
                 
                 setTimeout(() => {
-                    window.URL.revokeObjectURL(blobUrl);
                     document.body.removeChild(a);
                     progressArea.style.display = "none";
                     downloadBtn.disabled = false;
-                    fetchDownloadStatus();
+                    fetchDownloadStatus(); // Actualiza contador
                 }, 3000);
 
             } catch (error) {
-                showError("Falla de red: " + error.message + ". Intente nuevamente sin penalización.");
+                showError("Falla de red al autorizar: " + error.message);
                 progressArea.style.display = "none";
                 downloadBtn.disabled = false;
             }
