@@ -1,40 +1,31 @@
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>Portal de Descarga Oficial — Odyssea System</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Portal de Descargas — Odyssea System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <style>
         :root {
-            /* Paleta del Tema Partenón (Mármol y Clasicismo) */
-            --primary-base: #2C5282;
-            --primary-hover: #3E74B0;
-            --primary-active: #1A3254;
+            /* Tema Partenón/Egeo adaptado */
+            --primary: #2C5282;
+            --primary-dark: #1A3254;
             --primary-light: #E6EDF6;
             --accent: #C9956B;
-            --bg-app: #F7F5F0;
-            --row-odd: #F4F1EB;
-            --surface: #FFFFFF;
-            --border: #D8D3CB;
+            --bg-body: #FFFFFF;
+            --bg-section: #F8FAFC;
             --text-main: #2D2A24;
-            --text-secondary: #5E5A54;
+            --text-muted: #5E5A54;
+            --border: #D8D3CB;
             --success: #3A7A5C;
             --error: #B84A3A;
-            --shadow-sm: 0 1px 3px rgba(45, 42, 36, 0.05);
-            --shadow-md: 0 4px 20px rgba(26, 50, 84, 0.06);
-            --shadow-lg: 0 10px 30px rgba(26, 50, 84, 0.12);
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        section[id] {
-            scroll-margin-top: 90px;
+            --radius: 12px;
         }
 
         * {
@@ -44,261 +35,382 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-app);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-body);
             color: var(--text-main);
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
-        /* Header Navigation */
+        /* Split Hero Header */
+        /* Navbar Superior */
         .navbar {
-            background-color: var(--surface);
-            border-bottom: 1px solid var(--border);
-            box-shadow: var(--shadow-sm);
+            background-color: var(--primary-dark);
+            border-bottom: 2px solid var(--accent);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
             height: 70px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
         }
 
         .navbar-container {
             max-width: 1200px;
             margin: 0 auto;
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 100%;
             padding: 0 24px;
         }
 
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .logo-img {
-            height: 44px;
+            height: 36px;
             width: auto;
-            display: block;
+        }
+
+        .logo-separator {
+            width: 1px;
+            height: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .logo-badge {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #FFFFFF;
         }
 
         .nav-links {
             display: flex;
-            gap: 32px;
+            gap: 24px;
             list-style: none;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: var(--text-secondary);
-            font-size: 14px;
-            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 13.5px;
+            font-weight: 600;
             transition: color 0.2s;
         }
 
         .nav-links a:hover {
-            color: var(--primary-base);
+            color: var(--accent);
         }
 
-        .portal-badge {
-            background-color: var(--primary-light);
-            color: var(--primary-base);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
+        .nav-status {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #FFFFFF;
+            background-color: rgba(58, 122, 92, 0.35);
+            border: 1px solid rgba(58, 122, 92, 0.6);
+            padding: 6px 12px;
+            border-radius: 20px;
         }
 
-        /* Hero Section */
-        .hero-section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 60px 24px;
+        .nav-status-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #38BDF8;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse-cyan 1.8s infinite;
+        }
+
+        @keyframes pulse-cyan {
+            0% {
+                box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(56, 189, 248, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(56, 189, 248, 0);
+            }
+        }
+
+        .hero-split {
             display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 60px;
-            align-items: center;
+            grid-template-columns: 1fr 1fr;
+            min-height: auto;
+            /* Permitir tamaño adaptivo */
         }
 
         @media (max-width: 968px) {
-            .hero-section {
+            .hero-split {
                 grid-template-columns: 1fr;
-                gap: 40px;
-                padding: 40px 24px;
-            }
-            .hero-illustration {
-                display: none;
             }
         }
 
-        .hero-text-container {
+        .hero-left {
+            padding: 20px 60px 60px 60px;
+            /* Reducido padding superior por 60px */
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            max-width: 100%;
+            /* Expandido a mitad exacta */
         }
 
-        .hero-tag {
-            font-size: 12px;
+        @media (max-width: 968px) {
+            .hero-left {
+                padding: 40px 24px;
+                max-width: 100%;
+            }
+        }
+
+        .hero-logo {
+            height: 80px;
+            width: auto;
+            align-self: center;
+            margin-bottom: 30px;
+        }
+
+        .hero-right {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            padding: 20px 60px 60px 60px;
+            /* Reducido padding superior por 60px */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            position: relative;
+            width: 100%;
+        }
+
+        @media (max-width: 968px) {
+            .hero-right {
+                padding: 40px 24px;
+            }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            align-self: flex-start;
+            font-size: 11px;
             font-weight: 700;
-            color: var(--accent);
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            margin-bottom: 12px;
+            color: var(--primary-dark);
+            background-color: var(--primary-light);
+            padding: 6px 12px;
+            border-radius: 30px;
+            margin-bottom: 24px;
         }
 
         .hero-title {
-            font-size: 42px;
+            font-size: 38px;
             font-weight: 800;
-            color: var(--primary-active);
-            line-height: 1.15;
+            line-height: 1.2;
+            color: var(--primary-dark);
             margin-bottom: 20px;
         }
 
-        .hero-description {
-            font-size: 16px;
-            color: var(--text-secondary);
-            margin-bottom: 30px;
-            line-height: 1.6;
+        .hero-title span {
+            color: var(--primary);
         }
 
-        /* Card de Descarga */
-        .download-card {
-            background-color: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 28px;
-            box-shadow: var(--shadow-md);
-            position: relative;
+        .hero-desc {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-bottom: 40px;
         }
 
-        .download-card-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--primary-active);
-            margin-bottom: 16px;
+        /* 3 Steps Guide */
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: var(--primary);
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
         }
 
-        .badge-row {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
+        .step-text h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 2px;
         }
 
-        .badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
+        .step-text p {
+            font-size: 12.5px;
+            color: var(--text-muted);
         }
 
-        .badge-version {
+        /* Download Box Widget */
+        .dl-widget {
+            background-color: #FFFFFF;
+            border-radius: var(--radius);
+            padding: 40px;
+            color: var(--text-main);
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+        }
+
+        .dl-widget-header {
+            margin-bottom: 24px;
+        }
+
+        .dl-widget-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+
+        .dl-widget-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .version-tag {
+            display: inline-block;
             background-color: var(--primary-light);
-            color: var(--primary-base);
+            color: var(--primary);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            margin-top: 8px;
         }
 
-        .badge-status {
-            background-color: #E2F5EA;
-            color: var(--success);
+        .status-badge {
+            background-color: var(--primary-light);
+            border: 1px solid var(--border);
+            padding: 14px;
+            border-radius: var(--radius);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            font-size: 13px;
+        }
+
+        .status-badge span {
+            font-weight: 700;
+            color: var(--primary);
         }
 
         .form-group {
-            margin-bottom: 16px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
+            margin-bottom: 20px;
         }
 
-        .input-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-secondary);
+        .form-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
         }
 
         .input-field {
             width: 100%;
-            height: 46px;
+            height: 50px;
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 0 16px;
             font-family: inherit;
             font-size: 14px;
-            color: var(--primary-active);
-            background-color: var(--bg-app);
-            transition: border-color 0.2s, box-shadow 0.2s;
             outline: none;
+            transition: all 0.2s ease;
         }
 
         .input-field:focus {
-            border-color: var(--primary-base);
-            box-shadow: 0 0 0 3px rgba(44, 82, 130, 0.12);
-            background-color: var(--surface);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(44, 82, 130, 0.1);
         }
 
         .input-field.error {
             border-color: var(--error);
-            box-shadow: 0 0 0 3px rgba(184, 74, 58, 0.12);
         }
 
-        .error-message {
+        .err-label {
+            display: none;
             font-size: 12px;
             color: var(--error);
-            display: none;
+            font-weight: 500;
             align-items: center;
             gap: 4px;
-            font-weight: 500;
-            margin-top: 4px;
+            margin-top: 6px;
         }
 
-        .btn {
+        /* Botón con el color del landing page original */
+        .btn-dl {
             width: 100%;
-            height: 48px;
-            background-color: var(--primary-base);
+            height: 52px;
+            background-color: var(--primary);
             color: #FFFFFF;
             border: none;
             border-radius: 8px;
+            font-weight: 700;
             font-size: 14px;
-            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(44, 82, 130, 0.15);
+            transition: all 0.2s ease;
         }
 
-        .btn:hover {
-            background-color: var(--primary-active);
+        .btn-dl:hover {
+            background-color: var(--primary-dark);
         }
 
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        .btn:disabled {
+        .btn-dl:disabled {
             background-color: var(--border);
-            color: var(--text-secondary);
+            color: var(--text-muted);
             cursor: not-allowed;
-            box-shadow: none;
         }
 
-        /* Progreso */
         .progress-container {
-            margin-top: 16px;
             display: none;
+            margin-top: 20px;
         }
 
-        .progress-text {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--primary-base);
+        .progress-info {
             display: flex;
             justify-content: space-between;
+            font-size: 12px;
             margin-bottom: 6px;
+            font-weight: 600;
         }
 
         .progress-bar-bg {
-            width: 100%;
             height: 6px;
             background-color: var(--border);
             border-radius: 3px;
@@ -312,197 +424,12 @@
             transition: width 0.1s ease;
         }
 
-        /* Ilustración SVG */
-        .hero-illustration {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .hero-svg {
-            width: 100%;
-            max-width: 440px;
-            height: auto;
-        }
-        /* Seccion Servicios / Modulos */
-        .section-gray {
-            background-color: var(--row-odd);
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-            padding: 80px 24px;
-        }
-
-        .section-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto 50px auto;
-        }
-
-        .section-subtitle {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .section-title {
-            font-size: 32px;
-            font-weight: 800;
-            color: var(--primary-active);
-            margin-bottom: 16px;
-        }
-
-        .section-description {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-        }
-
-        .service-card {
-            background-color: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 36px 30px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
-        }
-
-        .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .service-icon-wrapper {
-            width: 50px;
-            height: 50px;
-            border-radius: 50px;
-            background-color: var(--primary-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 24px;
-            color: var(--primary-base);
-        }
-
-        .service-card-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--primary-active);
-            margin-bottom: 12px;
-        }
-
-        .service-card-text {
-            font-size: 13px;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        /* Sección de Requisitos del Sistema Dedicada */
-        .requirements-section {
-            background-color: var(--surface);
-            padding: 80px 24px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .requirements-grid-wrapper {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 20px;
-        }
-
-        .requirement-card-large {
-            background-color: var(--bg-app);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 28px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-        }
-
-        .requirement-card-large:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
-            border-color: var(--accent);
-        }
-
-        .requirement-card-large-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .requirement-card-large-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--primary-active);
-        }
-
-        .requirement-card-large-desc {
-            font-size: 13px;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        /* Sección Why Choose Us */
-        .why-section {
-            padding: 80px 24px;
-            background-color: var(--row-odd);
-            border-bottom: 1px solid var(--border);
-        }
-        .why-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 40px 30px;
-            margin-top: 20px;
-        }
-
-        .why-item {
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-        }
-
-        .why-number {
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--primary-base);
-            line-height: 1;
-        }
-
-        .why-item-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--primary-active);
-            margin-bottom: 8px;
-        }
-
-        .why-item-text {
-            font-size: 13px;
-            color: var(--text-secondary);
-            line-height: 1.55;
-        }
-
-        /* Sección Stats (Métricas e Integridad) */
+        /* Stats Section del Landing Page Original */
         .stats-section {
-            background: linear-gradient(135deg, var(--primary-active) 0%, #11223A 100%);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
             color: #FFFFFF;
             padding: 80px 24px;
+            border-bottom: 1px solid var(--border);
         }
 
         .stats-container {
@@ -510,6 +437,7 @@
             margin: 0 auto;
             display: grid;
             grid-template-columns: 1fr 1fr;
+            /* Dividido exactamente a la mitad */
             gap: 60px;
             align-items: center;
         }
@@ -579,7 +507,7 @@
             color: var(--accent);
             line-height: 1.1;
             flex-shrink: 0;
-            width: 220px;
+            width: 180px;
         }
 
         @media (max-width: 600px) {
@@ -587,6 +515,7 @@
                 flex-direction: column;
                 gap: 8px;
             }
+
             .stats-num {
                 width: auto;
             }
@@ -606,377 +535,392 @@
 
         .stats-item-desc {
             font-size: 13px;
-            color: rgba(255,255,255,0.7);
+            color: rgba(255, 255, 255, 0.7);
             line-height: 1.5;
         }
 
-        /* Changelog */
-        .changelog-section {
-            padding: 60px 24px;
-            border-top: 1px solid var(--border);
-            background-color: var(--bg-app);
+        /* PostgreSQL Segment */
+        .section-pg {
+            padding: 80px 24px;
+            background-color: var(--bg-section);
+            border-bottom: 1px solid var(--border);
         }
 
-        .changelog-card {
-            max-width: 800px;
+        .pg-grid {
+            max-width: 1200px;
             margin: 0 auto;
-            background-color: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 28px;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .changelog-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--primary-active);
-            margin-bottom: 16px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            /* Dividido exactamente a la mitad */
+            gap: 48px;
             align-items: center;
-            gap: 8px;
         }
 
-        .changelog-list {
-            list-style: none;
+        @media (max-width: 968px) {
+            .pg-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .pg-logo-card {
+            background-color: #FFFFFF;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 40px;
+            text-align: center;
+        }
+
+        .pg-img {
+            max-width: 140px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .pg-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 16px;
+        }
+
+        .pg-desc {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+
+        .pg-feature-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 16px;
+        }
+
+        .pg-feature-item {
+            display: flex;
+            gap: 12px;
+        }
+
+        .pg-feature-icon {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .pg-feature-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .pg-feature-desc {
+            font-size: 12.5px;
+            color: var(--text-muted);
+        }
+
+        /* System Requirements */
+        .section-req {
+            padding: 80px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .sec-title-centered {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .sec-title-centered h2 {
+            font-size: 32px;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        .sec-title-centered p {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        .req-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: 1px solid var(--border);
+            background: none;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: #FFFFFF;
+            border-color: var(--primary);
+        }
+
+        .req-card {
+            background-color: var(--bg-section);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 40px;
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+        }
+
+        .req-card.active {
+            display: grid;
+        }
+
+        .req-item-val h4 {
             font-size: 13px;
-            color: var(--text-secondary);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 6px;
         }
 
-        .changelog-list li {
+        .req-item-val p {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        /* Accordion FAQ - 10 preguntas */
+        .section-faq {
+            padding: 80px 24px;
+            background-color: var(--bg-section);
+            border-top: 1px solid var(--border);
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background-color: #FFFFFF;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 20px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            color: var(--text-main);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question::after {
+            content: "+";
+            font-size: 18px;
+            color: var(--primary);
+        }
+
+        .faq-item.active .faq-question::after {
+            content: "−";
+        }
+
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            font-size: 13.5px;
+            color: var(--text-muted);
+            border-top: 1px solid transparent;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 20px;
+            max-height: 200px;
+            border-top-color: var(--border);
+        }
+
+        /* Changelog */
+        .changelog {
+            padding: 40px 24px;
+            background-color: var(--bg-body);
+            border-top: 1px solid var(--border);
+        }
+
+        .changelog-content {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 13.5px;
+            color: var(--text-muted);
+        }
+
+        .changelog-content h4 {
+            font-size: 15px;
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+        }
+
+        .changelog-content ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .changelog-content li {
             position: relative;
-            padding-left: 18px;
+            padding-left: 20px;
+            margin-bottom: 8px;
         }
 
-        .changelog-list li::before {
+        .changelog-content li::before {
             content: "✓";
+            color: var(--success);
             position: absolute;
             left: 0;
-            color: var(--success);
             font-weight: bold;
         }
 
         /* Footer */
         .footer {
-            background-color: var(--primary-active);
-            color: rgba(255,255,255,0.6);
-            padding: 40px 24px;
-            border-top: 1px solid rgba(255,255,255,0.08);
+            background-color: var(--primary-dark);
+            color: rgba(255, 255, 255, 0.6);
             text-align: center;
-            font-size: 12px;
+            padding: 40px 24px;
+            font-size: 13px;
         }
 
-        /* Animaciones */
+        /* Animations */
         @keyframes spin-slow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         @keyframes unspin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(-360deg); }
-        }
+            from {
+                transform: rotate(0deg);
+            }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-6px); }
-            40%, 80% { transform: translateX(6px); }
-        }
-
-        .shake {
-            animation: shake 0.4s ease-in-out;
+            to {
+                transform: rotate(-360deg);
+            }
         }
     </style>
 </head>
+
 <body>
 
-    <!-- Navigation Header -->
+    <!-- Navbar Superior -->
     <nav class="navbar">
         <div class="navbar-container">
-            <img src="../Logo2.png" class="logo-img" alt="Odyssea Logo">
+            <div class="logo-container">
+                <img src="../assets/odyssea_img/Logo4.png" class="logo-img" alt="Odyssea Logo">
+                <div class="logo-separator"></div>
+                <span class="logo-badge">Portal de Distribución</span>
+            </div>
             <ul class="nav-links">
-                <li><a href="#ecosistema">Ecosistema</a></li>
-                <li><a href="#modulos">Módulos</a></li>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#metricas">Métricas</a></li>
+                <li><a href="#postgresql">Base de Datos</a></li>
                 <li><a href="#requisitos">Requisitos</a></li>
-                <li><a href="#ventajas">Ventajas</a></li>
+                <li><a href="#faq">Preguntas</a></li>
             </ul>
-            <div class="portal-badge">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                </svg>
-                Portal Seguro
+            <div class="nav-status">
+                <span class="nav-status-dot"></span>
+                ONLINE
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero-section" id="ecosistema">
-        <div class="hero-text-container">
-            <span class="hero-tag">Sistema de Planificación de Recursos</span>
-            <h1 class="hero-title">Ecosistema ERP Empresarial</h1>
-            <p class="hero-description">
-                Su plataforma <strong>Odyssea Enterprise</strong> ha sido compilada a la medida y está lista para su implementación. Introduzca su clave única de descarga a continuación para proceder con la instalación segura.
+    <!-- Split Hero -->
+    <div class="hero-split" id="inicio">
+        <div class="hero-left">
+            <span class="hero-badge">Implementación Directa</span>
+            <h1 class="hero-title">Acceso al Core ERP <span>Odyssea System</span></h1>
+            <p class="hero-desc">
+                Valide su licencia corporativa para acceder a la descarga de la plataforma ERP. La distribución se
+                encuentra compilada y lista para aprovisionar su servidor empresarial.
             </p>
 
-            <!-- Card de Descarga Inyectada -->
-            <div class="download-card">
-                <div class="download-card-title">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary-base)" stroke-width="2.5">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                        <polyline points="7 10 12 15 17 10"></polyline>
-                        <line x1="12" y1="15" x2="12" y2="3"></line>
-                    </svg>
-                    Portal de Descarga Oficial
+            <div class="steps-container">
+                <div class="step-item">
+                    <span class="step-num">1</span>
+                    <div class="step-text">
+                        <h4>Ingrese el Código de Validación</h4>
+                        <p>Use el código temporal de 8 caracteres enviado a su correo de TI.</p>
+                    </div>
                 </div>
-                <div class="badge-row">
-                    <span class="badge badge-version">Versión v0.0.19</span>
-                    <span class="badge badge-status">Verificado por MD5/SHA256</span>
+                <div class="step-item">
+                    <span class="step-num">2</span>
+                    <div class="step-text">
+                        <h4>Autorice la Descarga</h4>
+                        <p>El portal validará los límites en caliente contra la base central.</p>
+                    </div>
                 </div>
-                <div style="font-size: 13px; font-weight: 600; color: var(--primary-base); margin-bottom: 16px;" id="remaining-downloads-text">
-                    Consultando descargas disponibles...
+                <div class="step-item">
+                    <span class="step-num">3</span>
+                    <div class="step-text">
+                        <h4>Instale en Servidor Local</h4>
+                        <p>Ejecute el instalador autoelevado y vincule su motor PostgreSQL.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-right">
+            <!-- DL Widget -->
+            <div class="dl-widget">
+                <div class="dl-widget-header" style="text-align: center; margin-bottom: 20px;">
+                    <img src="../assets/odyssea_img/Logo2.png" style="height: 48px; width: auto; margin-bottom: 12px;"
+                        alt="Odyssea Logo">
+                    <h3 class="dl-widget-title">Validación de Licencia</h3>
+                    <p class="dl-widget-subtitle">Ingreso de credenciales criptográficas</p>
+                    <span class="version-tag" id="version-lbl">Versión v0.0.19</span>
+                </div>
+
+                <div class="status-badge">
+                    <span>Cupos disponibles hoy:</span>
+                    <span id="remaining-downloads-text">Cargando...</span>
                 </div>
 
                 <div class="form-group">
-                    <label class="input-label" for="access-code">Código de Acceso Digital (Enviado a su correo)</label>
-                    <input type="text" id="access-code" class="input-field" placeholder="Ingrese código de 8 caracteres" maxlength="12" autocomplete="off">
-                    <div id="error-lbl" class="error-message">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" y1="8" x2="12" y2="12"></line>
-                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                        </svg>
-                        <span id="error-txt">Código de acceso incorrecto o expirado</span>
+                    <label class="form-label" for="access-code">Código Único Digital</label>
+                    <input type="text" id="access-code" class="input-field"
+                        placeholder="Ingrese código digital de 8 caracteres" maxlength="12" autocomplete="off">
+                    <div class="err-label" id="error-lbl">
+                        <span id="error-txt">Código inválido o límite de descargas excedido.</span>
                     </div>
                 </div>
 
-                <button id="download-btn" class="btn">
-                    Desbloquear y Descargar Instalador
-                </button>
+                <button class="btn-dl" id="download-btn">Comenzar Descarga Segura</button>
 
-                <div id="progress-area" class="progress-container">
-                    <div class="progress-text">
-                        <span id="progress-status">Verificando firma de descarga...</span>
+                <!-- Progress Area -->
+                <div class="progress-container" id="progress-area">
+                    <div class="progress-info">
+                        <span id="progress-status">Validando tokens...</span>
                         <span id="progress-percent">0%</span>
                     </div>
                     <div class="progress-bar-bg">
-                        <div id="progress-bar" class="progress-bar-fill"></div>
+                        <div class="progress-bar-fill" id="progress-bar"></div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Ilustración Vectorial Premium -->
-        <div class="hero-illustration">
-            <svg class="hero-svg" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Servidor e Intercambio Seguro -->
-                <rect x="150" y="80" width="200" height="70" rx="10" fill="#1A3254" />
-                <rect x="150" y="180" width="200" height="70" rx="10" fill="#1A3254" />
-                <rect x="150" y="280" width="200" height="70" rx="10" fill="#2C5282" />
-                
-                <!-- Detalles de Servidores -->
-                <circle cx="180" cy="115" r="6" fill="#C9956B" />
-                <circle cx="180" cy="215" r="6" fill="#3A7A5C" />
-                <circle cx="180" cy="315" r="6" fill="#FFFFFF" />
-                <line x1="210" y1="115" x2="310" y2="115" stroke="rgba(255,255,255,0.2)" stroke-width="4" stroke-linecap="round" />
-                <line x1="210" y1="215" x2="310" y2="215" stroke="rgba(255,255,255,0.2)" stroke-width="4" stroke-linecap="round" />
-                <line x1="210" y1="315" x2="310" y2="315" stroke="rgba(255,255,255,0.4)" stroke-width="4" stroke-linecap="round" />
-
-                <!-- Conexiones en red y nube -->
-                <path d="M250,350 L250,420" stroke="#2C5282" stroke-width="3" stroke-dasharray="6 6" />
-                <circle cx="250" cy="420" r="12" fill="#C9956B" />
-                <circle cx="250" cy="420" r="6" fill="#FFFFFF" />
-
-                <!-- Nube decorativa superior -->
-                <path d="M370,160 C370,140 390,130 405,140 C415,130 435,135 440,150 C450,150 455,160 450,170 C450,175 410,180 370,180 Z" fill="#E6EDF6" opacity="0.8"/>
-                <path d="M50,220 C50,205 65,198 76,205 C84,198 100,201 104,212 C112,212 116,220 112,227 C112,231 82,235 50,235 Z" fill="#E6EDF6" opacity="0.6"/>
-            </svg>
-        </div>
-    </section>
-
-    <!-- Services / Modules Section -->
-    <section class="section-gray" id="modulos">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-subtitle">Arquitectura modular lego</span>
-                <h2 class="section-title">Estructura del Ecosistema</h2>
-                <p class="section-description">
-                    Cada componente de Odyssea System está empaquetado bajo un esquema de aislamiento total. El software se compone y habilita de acuerdo a las características contratadas en su licencia maestra.
-                </p>
-            </div>
-
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon-wrapper">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                        </svg>
-                    </div>
-                    <h3 class="service-card-title">Gestión Operativa e Inventario</h3>
-                    <p class="service-card-text">
-                        Automatización total del flujo logístico. Control de compras, almacenes, inventario valorado, despachos y conciliaciones. Arquitectura optimizada para procesar transacciones locales en caliente.
-                    </p>
-                </div>
-
-                <div class="service-card">
-                    <div class="service-icon-wrapper">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                            <polyline points="10 9 9 9 8 9"></polyline>
-                        </svg>
-                    </div>
-                    <h3 class="service-card-title">Tributos y Contabilidad Fiscal</h3>
-                    <p class="service-card-text">
-                        Facturación e integración fiscal de acuerdo a normativas vigentes. Generación e impresión de libros oficiales de IVA, reportes contables estructurados y control de retenciones locales.
-                    </p>
-                </div>
-
-                <div class="service-card">
-                    <div class="service-icon-wrapper">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                        </svg>
-                    </div>
-                    <h3 class="service-card-title">Seguridad y Bóveda Cifrada</h3>
-                    <p class="service-card-text">
-                        Resguardo seguro de credenciales mediante algoritmos de encriptación local. Bitácora interna de errores encriptada y control centralizado de terminales concurrentes.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Dedicated System Requirements Section -->
-    <section class="requirements-section" id="requisitos">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-subtitle">Compatibilidad de Entorno</span>
-                <h2 class="section-title">Requisitos de Instalación</h2>
-                <p class="section-description">
-                    Verifique que su servidor o estación de trabajo cumpla con las especificaciones mínimas para garantizar el correcto arranque del núcleo administrativo.
-                </p>
-            </div>
-
-            <div class="requirements-grid-wrapper">
-                <div class="requirement-card-large">
-                    <div class="requirement-card-large-header">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary-base)" stroke-width="2">
-                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                            <line x1="8" y1="21" x2="16" y2="21"></line>
-                            <line x1="12" y1="17" x2="12" y2="21"></line>
-                        </svg>
-                        <h4 class="requirement-card-large-title">Sistema Operativo</h4>
-                    </div>
-                    <p class="requirement-card-large-desc">
-                        Windows 10 u 11 (ediciones Pro/Enterprise recomendadas). Arquitectura obligatoria de **64 bits (x64)**. Totalmente compatible con entornos locales físicos y servidores virtualizados.
-                    </p>
-                </div>
-
-                <div class="requirement-card-large">
-                    <div class="requirement-card-large-header">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary-base)" stroke-width="2">
-                            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
-                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
-                            <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"></path>
-                        </svg>
-                        <h4 class="requirement-card-large-title">Base de Datos</h4>
-                    </div>
-                    <p class="requirement-card-large-desc">
-                        Requiere motor relacional **PostgreSQL 18.3** (o superior) instalado en la máquina que funcionará como Servidor central. Puede descargarlo directamente desde <a href="https://www.postgresql.org/download/windows/" target="_blank" style="color: var(--primary-base); text-decoration: none; font-weight: bold;">este enlace de distribución</a>.
-                    </p>
-                </div>
-
-                <div class="requirement-card-large">
-                    <div class="requirement-card-large-header">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary-base)" stroke-width="2">
-                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-                        </svg>
-                        <h4 class="requirement-card-large-title">Hardware Mínimo</h4>
-                    </div>
-                    <p class="requirement-card-large-desc">
-                        Procesador Dual-Core a 2.0 GHz o superior, **4 GB de memoria RAM** (8 GB recomendados en servidor) y un mínimo de **500 MB** de almacenamiento disponible en disco duro (SSD preferiblemente).
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Why Choose Us Section -->
-    <section class="why-section" id="ventajas">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-subtitle">Robustez tecnológica</span>
-                <h2 class="section-title">¿Por qué elegir Odyssea?</h2>
-                <p class="section-description">
-                    Nuestra suite administrativa está construida desde el núcleo pensando en la seguridad física de su información y la continuidad del negocio.
-                </p>
-            </div>
-
-            <div class="why-grid">
-                <div class="why-item">
-                    <span class="why-number">01</span>
-                    <div>
-                        <h4 class="why-item-title">Modularidad LEGO</h4>
-                        <p class="why-item-text">Módulos completamente independientes que se comunican vía PubSub asíncrono, evitando fallos cruzados.</p>
-                    </div>
-                </div>
-
-                <div class="why-item">
-                    <span class="why-number">02</span>
-                    <div>
-                        <h4 class="why-item-title">Bóveda Cifrada</h4>
-                        <p class="why-item-text">Las contraseñas de red y parámetros de base de datos se guardan con seguridad de nivel bancario en el disco local.</p>
-                    </div>
-                </div>
-
-                <div class="why-item">
-                    <span class="why-number">03</span>
-                    <div>
-                        <h4 class="why-item-title">Hardware Locking</h4>
-                        <p class="why-item-text">La base de datos se sella con el HWID de su servidor principal. Protección total anti-copias y anti-clonaciones externas.</p>
-                    </div>
-                </div>
-
-                <div class="why-item">
-                    <span class="why-number">04</span>
-                    <div>
-                        <h4 class="why-item-title">Telemetría Activa</h4>
-                        <p class="why-item-text">Diagnóstico y subida de errores críticos automatizados a la nube para soporte y resolución en tiempo record.</p>
-                    </div>
-                </div>
-
-                <div class="why-item">
-                    <span class="why-number">05</span>
-                    <div>
-                        <h4 class="why-item-title">Instalador Autoelevado</h4>
-                        <p class="why-item-text">Instalación simple de base de datos y homologación automática de privilegios PostgreSQL sin requerir configuración manual.</p>
-                    </div>
-                </div>
-
-                <div class="why-item">
-                    <span class="why-number">06</span>
-                    <div>
-                        <h4 class="why-item-title">Backup con Autoguardado</h4>
-                        <p class="why-item-text">Respaldo automático de seguridad local de su bóveda y base de datos antes de aplicar cualquier actualización progresiva.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="stats-section">
+    <!-- Stats Section Original con el Gauge del 100% -->
+    <section class="stats-section" id="metricas">
         <div class="stats-container">
             <div class="gauge-col">
                 <div class="gauge-circle">
@@ -991,7 +935,8 @@
                     <span class="stats-num">PostgreSQL 18</span>
                     <div class="stats-text-wrapper">
                         <span class="stats-item-title">Base de Datos Dedicada</span>
-                        <span class="stats-item-desc">Utiliza el motor de base de datos relacional open source más avanzado del mundo para su operación local.</span>
+                        <span class="stats-item-desc">Utiliza el motor de base de datos relacional open source más
+                            avanzado del mundo para su operación local.</span>
                     </div>
                 </div>
 
@@ -999,7 +944,8 @@
                     <span class="stats-num">99.9%</span>
                     <div class="stats-text-wrapper">
                         <span class="stats-item-title">Disponibilidad Operativa</span>
-                        <span class="stats-item-desc">Los clientes operan localmente de forma independiente a fallos de internet, garantizando productividad continua.</span>
+                        <span class="stats-item-desc">Los clientes operan localmente de forma independiente a fallos de
+                            internet, garantizando productividad continua.</span>
                     </div>
                 </div>
 
@@ -1007,24 +953,185 @@
                     <span class="stats-num">Cero Nube</span>
                     <div class="stats-text-wrapper">
                         <span class="stats-item-title">Privacidad Absoluta</span>
-                        <span class="stats-item-desc">Sus datos financieros reside exclusivamente en su red local física. Odyssea no almacena su información en servidores propios.</span>
+                        <span class="stats-item-desc">Sus datos financieros reside exclusivamente en su red local
+                            física. Odyssea no almacena su información en servidores propios.</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Changelog Section -->
-    <section class="changelog-section">
-        <div class="changelog-card">
-            <div class="changelog-title">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary-base)" stroke-width="2.5">
-                    <path d="M12 20h9"></path>
-                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-                </svg>
-                Notas de la versión vv0.0.19
+    <!-- PostgreSQL Section -->
+    <section class="section-pg" id="postgresql">
+        <div class="pg-grid">
+            <div class="pg-logo-card">
+                <img src="../assets/odyssea_img/PostgreSQL.png.png" class="pg-img" alt="PostgreSQL Logo">
+                <div>
+                    <span class="version-tag" style="background-color: #E2ECF4; color: #336791; margin: 0;">PostgreSQL
+                        v18</span>
+                </div>
             </div>
-            <ul class="changelog-list">
+            <div>
+                <span class="hero-badge">Motor Central de Datos</span>
+                <h2 class="pg-title">Almacenamiento Relacional de Alta Disponibilidad</h2>
+                <p class="pg-desc">
+                    Odyssea Enterprise confía el resguardo y almacenamiento de su negocio al motor de datos relacional
+                    de código abierto más robusto y avanzado de la industria. Su arquitectura garantiza que toda
+                    transacción financiera y comercial opere bajo los más estrictos estándares de la informática.
+                </p>
+                <div class="pg-feature-list">
+                    <div class="pg-feature-item">
+                        <span class="pg-feature-icon">✓</span>
+                        <div>
+                            <h4 class="pg-feature-title">Integridad Transaccional Completa</h4>
+                            <p class="pg-feature-desc">Compatibilidad absoluta con transacciones ACID para evitar la
+                                corrupción de información fiscal.</p>
+                        </div>
+                    </div>
+                    <div class="pg-feature-item">
+                        <span class="pg-feature-icon">✓</span>
+                        <div>
+                            <h4 class="pg-feature-title">Concurrencia Multi-Usuario Activa</h4>
+                            <p class="pg-feature-desc">Aislamiento de transacciones mediante control de concurrencia
+                                multiversión (MVCC) optimizado.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- System Requirements Tabs -->
+    <section class="section-req" id="requisitos">
+        <div class="sec-title-centered">
+            <h2>Requisitos del Sistema</h2>
+            <p>Verifique la compatibilidad física de su servidor principal antes de instalar el instalador.</p>
+        </div>
+
+        <div class="req-tabs">
+            <button class="tab-btn active" onclick="switchTab('req-min')">Mínimo</button>
+            <button class="tab-btn" onclick="switchTab('req-rec')">Recomendado</button>
+        </div>
+
+        <div class="req-card active" id="req-min">
+            <div class="req-item-val">
+                <h4>Sistema Operativo</h4>
+                <p>Windows 10 x64</p>
+            </div>
+            <div class="req-item-val">
+                <h4>Procesador (CPU)</h4>
+                <p>2 Cores a 2.0 GHz</p>
+            </div>
+            <div class="req-item-val">
+                <h4>Memoria RAM</h4>
+                <p>4 GB RAM</p>
+            </div>
+            <div class="req-item-val">
+                <h4>Disco Duro</h4>
+                <p>500 MB libres (HDD)</p>
+            </div>
+        </div>
+
+        <div class="req-card" id="req-rec">
+            <div class="req-item-val">
+                <h4>Sistema Operativo</h4>
+                <p>Windows 11 / Server x64</p>
+            </div>
+            <div class="req-item-val">
+                <h4>Procesador (CPU)</h4>
+                <p>4+ Cores a 3.0 GHz</p>
+            </div>
+            <div class="req-item-val">
+                <h4>Memoria RAM</h4>
+                <p>8 GB u 16 GB RAM</p>
+            </div>
+            <div class="req-item-val">
+                <h4>Disco Duro</h4>
+                <p>1 GB libre (SSD)</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Accordion - 10 preguntas -->
+    <section class="section-faq" id="faq">
+        <div class="sec-title-centered">
+            <h2>Preguntas Frecuentes</h2>
+            <p>Respuestas rápidas sobre el proceso de instalación y validación de descargas.</p>
+        </div>
+
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">¿El código de descarga tiene fecha de expiración?
+                </div>
+                <div class="faq-answer">Sí, cada código de acceso se genera de forma dinámica para el día actual en
+                    curso por motivos de seguridad y expira automáticamente a las 23:59 del mismo día.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">¿Qué pasa si mi descarga se cancela por una falla de
+                    red?</div>
+                <div class="faq-answer">Si la descarga se interrumpe, el sistema le permite reintentar el proceso. Sin
+                    embargo, recuerde que el portal valida los cupos máximos de descarga de su licencia en vivo para
+                    garantizar la seguridad.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">¿Es obligatorio instalar PostgreSQL en el mismo
+                    equipo?</div>
+                <div class="faq-answer">No es obligatorio. Puede instalar PostgreSQL en un servidor de base de datos
+                    dedicado dentro de su red local e indicar la dirección IP de conexión durante el asistente inicial
+                    de la aplicación.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">¿Cómo se maneja la privacidad de la información
+                    financiera?</div>
+                <div class="faq-answer">La privacidad es absoluta. Su información financiera reside única y
+                    exclusivamente en su base de datos local y servidor físico. Odyssea no almacena ni lee datos
+                    contables en servidores externos de la nube.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">¿El sistema requiere una conexión permanente a
+                    internet para operar?</div>
+                <div class="faq-answer">No. Odyssea Enterprise opera de forma local e independiente de fallas de
+                    internet. El acceso a la nube se limita al updater automatizado y auditoría de estaciones.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">¿Qué tipo de redundancia o respaldo posee el motor
+                    de datos?</div>
+                <div class="faq-answer">PostgreSQL permite configurar copias de seguridad en caliente, replicación
+                    maestro-esclavo y backups lógicos incrementales para resguardar la continuidad del negocio.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">¿La licencia limita la cantidad de estaciones o
+                    terminales?</div>
+                <div class="faq-answer">Sí, la cantidad máxima de terminales concurrentes permitidas está resguardada y
+                    controlada en base a los términos establecidos en su licencia maestra.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">¿Cómo se asocia el sistema a nuestro servidor
+                    principal?</div>
+                <div class="faq-answer">El núcleo administrativo se vincula directamente a un identificador único de
+                    componentes lógicos de hardware (HWID) del servidor principal para evitar la duplicación o copias no
+                    autorizadas.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">¿Qué ocurre si actualizamos componentes físicos de
+                    nuestro servidor?</div>
+                <div class="faq-answer">En caso de cambios mayores de hardware en el servidor, deberá solicitar una
+                    re-homologación rápida de la licencia desde el Control Center para reactivar la operatividad.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">¿Se realiza algún cobro por descargas adicionales de
+                    mantenimiento?</div>
+                <div class="faq-answer">No. Las descargas de mantenimiento y actualizaciones del sistema son totalmente
+                    gratuitas y están integradas dentro de su plan activo de soporte corporativo.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Changelog Section -->
+    <section class="changelog">
+        <div class="changelog-content">
+            <h4>Notas de la Versión</h4>
+            <ul id="changelog-container">
                 <li>Actualizacion de mantenimiento</li>
             </ul>
         </div>
@@ -1036,23 +1143,34 @@
     </footer>
 
     <script>
+        // Tab switcher function
+        function switchTab(id) {
+            document.querySelectorAll('.req-card').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // FAQ toggle function
+        function toggleFaq(el) {
+            const item = el.parentElement;
+            item.classList.toggle('active');
+        }
+
+        // Supabase variables and logic
         const CIPHERTEXT = "b0c2e6296acfdb532d2105b3cfd6c209495ce84ed5848d7be34e3a6e33fa626cbbbc7b7503d317fafec64424afe25e18b9631434e2260f20213e578a6aa3be3dcecd76f371d7e8975ef972a42511b0e7ade5dfcc54feb39b750ab651610fc3fa760b69d332c0d67da247fbf9041b29f8";
         const CLIENT_ID = "Ulises Uzcategui";
         const VERSION = "v0.0.19";
         const SUPABASE_URL = "https://tdpgruhhuwapkfcqcreb.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_-CQjKnJ9umrHw-PwVwAP-g_JEGJUBG6";
 
-        // Decriptación RC4
         function rc4DecryptFromHex(key, hexStr) {
             var bytes = [];
             for (var c = 0; c < hexStr.length; c += 2) {
                 bytes.push(parseInt(hexStr.substr(c, 2), 16));
             }
-            
             var S = [], j = 0, x, res = '';
-            for (var i = 0; i < 256; i++) {
-                S[i] = i;
-            }
+            for (var i = 0; i < 256; i++) { S[i] = i; }
             for (var i = 0; i < 256; i++) {
                 j = (j + S[i] + key.charCodeAt(i % key.length)) % 256;
                 x = S[i]; S[i] = S[j]; S[j] = x;
@@ -1075,16 +1193,14 @@
         const progressBar = document.getElementById("progress-bar");
         const progressPercent = document.getElementById("progress-percent");
         const progressStatus = document.getElementById("progress-status");
-        const downloadCard = document.querySelector(".download-card");
+        const versionLbl = document.getElementById("version-lbl");
+
+        versionLbl.textContent = "Versión " + VERSION;
 
         function showError(msg) {
             errorTxt.textContent = msg;
             errorLbl.style.display = "flex";
             inputCode.classList.add("error");
-            downloadCard.classList.add("shake");
-            setTimeout(() => {
-                downloadCard.classList.remove("shake");
-            }, 400);
         }
 
         function clearError() {
@@ -1093,21 +1209,11 @@
         }
 
         inputCode.addEventListener("input", clearError);
-        inputCode.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") {
-                downloadBtn.click();
-            }
-        });
 
-        // Consultar estado de descargas desde Supabase via RPC (no SELECT directo por RLS)
         async function fetchDownloadStatus() {
-            if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-                console.log("Supabase config missing");
-                return;
-            }
+            if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
             try {
-                const url = SUPABASE_URL + "/rest/v1/rpc/get_download_status";
-                const response = await fetch(url, {
+                const response = await fetch(SUPABASE_URL + "/rest/v1/rpc/get_download_status", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -1119,28 +1225,17 @@
                 if (response.ok) {
                     const result = await response.json();
                     if (result && result.status === "success") {
-                        const max_dl = result.max_downloads || 3;
-                        const used_dl = result.downloads_used || 0;
                         const remaining = result.remaining || 0;
-                        
-                        const remainingBadge = document.getElementById("remaining-downloads-text");
-                        if (remainingBadge) {
-                            remainingBadge.textContent = "Descargas disponibles: " + remaining + " de " + max_dl;
-                            remainingBadge.style.color = remaining <= 0 ? "var(--error)" : "var(--primary-base)";
-                        }
-                        
+                        const max_dl = result.max_downloads || 3;
+                        document.getElementById("remaining-downloads-text").textContent = remaining + " descargas de " + max_dl;
                         if (remaining <= 0) {
                             downloadBtn.disabled = true;
-                            showError("El límite de descargas seguras para esta versión ha sido alcanzado. Contacte a soporte.");
-                            inputCode.disabled = true;
-                        } else {
-                            downloadBtn.disabled = false;
-                            inputCode.disabled = false;
+                            showError("Límite de descargas alcanzado.");
                         }
                     }
                 }
             } catch (err) {
-                console.error("Error al consultar descargas:", err);
+                console.error(err);
             }
         }
 
@@ -1149,109 +1244,73 @@
         downloadBtn.addEventListener("click", async () => {
             const code = inputCode.value.trim().toUpperCase();
             if (!code) {
-                showError("Debe ingresar el código de acceso digital");
+                showError("Ingrese el código.");
                 return;
             }
-
             clearError();
             downloadBtn.disabled = true;
-            
+
             const decrypted = rc4DecryptFromHex(code, CIPHERTEXT);
-            const prefix = "ODYSSEA_DECRYPT_OK_";
-            
-            if (!decrypted.startsWith(prefix)) {
-                showError("Código de acceso incorrecto o expirado");
+            if (!decrypted.startsWith("ODYSSEA_DECRYPT_OK_")) {
+                showError("Código de acceso incorrecto o expirado.");
                 downloadBtn.disabled = false;
                 return;
             }
 
-            // Cada descarga SIEMPRE pasa por authorize_download (gatekeeper del servidor)
-            // authorize_download verifica el límite, incrementa el contador y devuelve la URL
             try {
                 progressArea.style.display = "block";
-                progressStatus.textContent = "Autorizando descarga digital segura...";
+                progressStatus.textContent = "Autorizando descarga...";
                 progressBar.style.width = "30%";
                 progressPercent.textContent = "30%";
 
-                let registerSuccess = false;
-                let downloadUrl = "";
+                const rpcResp = await fetch(SUPABASE_URL + "/rest/v1/rpc/authorize_download", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "apikey": SUPABASE_ANON_KEY,
+                        "Authorization": "Bearer " + SUPABASE_ANON_KEY
+                    },
+                    body: JSON.stringify({ "p_client_id": CLIENT_ID, "p_access_code": code })
+                });
 
-                if (SUPABASE_URL && SUPABASE_ANON_KEY) {
-                    try {
-                        const rpcUrl = SUPABASE_URL + "/rest/v1/rpc/authorize_download";
-                        const rpcResp = await fetch(rpcUrl, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "apikey": SUPABASE_ANON_KEY,
-                                "Authorization": "Bearer " + SUPABASE_ANON_KEY
-                            },
-                            body: JSON.stringify({
-                                "p_client_id": CLIENT_ID,
-                                "p_access_code": code
-                            })
-                        });
-                        
-                        if (rpcResp.ok) {
-                            const rpcResult = await rpcResp.json();
-                            if (rpcResult && rpcResult.status === "success") {
-                                registerSuccess = true;
-                                downloadUrl = rpcResult.download_url;
-                            } else if (rpcResult && rpcResult.status === "max_downloads_reached") {
-                                showError("Ha alcanzado el límite máximo de descargas permitidas. Contacte a soporte técnico.");
-                                fetchDownloadStatus();
-                            } else {
-                                showError(rpcResult.message || "La descarga no pudo ser autorizada.");
-                            }
-                        } else {
-                            const errBody = await rpcResp.json().catch(() => ({}));
-                            showError(errBody.message || "El portal no pudo autorizar la descarga.");
-                        }
-                    } catch (sbErr) {
-                        console.error("Supabase error:", sbErr);
-                        showError("Error de comunicación de red. Intente de nuevo.");
+                if (rpcResp.ok) {
+                    const rpcResult = await rpcResp.json();
+                    if (rpcResult && rpcResult.status === "success") {
+                        const downloadUrl = rpcResult.download_url;
+                        progressStatus.textContent = "Iniciando descarga...";
+                        progressBar.style.width = "100%";
+                        progressPercent.textContent = "100%";
+
+                        const a = document.createElement('a');
+                        a.style.display = 'none';
+                        a.href = downloadUrl;
+                        a.download = downloadUrl.substring(downloadUrl.lastIndexOf('/') + 1);
+                        document.body.appendChild(a);
+                        a.click();
+
+                        setTimeout(() => {
+                            document.body.removeChild(a);
+                            progressArea.style.display = "none";
+                            downloadBtn.disabled = false;
+                            fetchDownloadStatus();
+                        }, 3000);
+                    } else {
+                        showError(rpcResult.message || "Error al autorizar.");
+                        progressArea.style.display = "none";
+                        downloadBtn.disabled = false;
                     }
                 } else {
-                    // Fallback local: Si no hay Supabase configurado, construir la URL de GitHub
-                    registerSuccess = true;
-                    const clientSafe = CLIENT_ID.replace(/ /g, "_");
-                    const versionClean = VERSION.replace("v", "");
-                    const installerName = "Odyssea_" + clientSafe + "_v" + versionClean + "_Setup.exe";
-                    const tag = clientSafe + "-" + VERSION;
-                    downloadUrl = "https://github.com/odysseasystem-code/odyssea-releases/releases/download/" + tag + "/" + installerName;
-                }
-
-                if (!registerSuccess || !downloadUrl) {
+                    showError("Falla de comunicación con el portal.");
                     progressArea.style.display = "none";
                     downloadBtn.disabled = false;
-                    return;
                 }
-
-                // Iniciar la descarga clásica nativa (inmune a CORS)
-                progressStatus.textContent = "¡Descarga autorizada! Iniciando descarga...";
-                progressBar.style.width = "100%";
-                progressPercent.textContent = "100%";
-
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = downloadUrl;
-                a.download = downloadUrl.substring(downloadUrl.lastIndexOf('/') + 1);
-                document.body.appendChild(a);
-                a.click();
-                
-                setTimeout(() => {
-                    document.body.removeChild(a);
-                    progressArea.style.display = "none";
-                    downloadBtn.disabled = false;
-                    fetchDownloadStatus(); // Actualiza el contador en tiempo real
-                }, 3000);
-
             } catch (error) {
-                showError("Falla de red al autorizar: " + error.message);
+                showError("Error de red: " + error.message);
                 progressArea.style.display = "none";
                 downloadBtn.disabled = false;
             }
         });
     </script>
 </body>
+
 </html>
