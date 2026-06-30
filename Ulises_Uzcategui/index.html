@@ -1165,42 +1165,8 @@
                 return;
             }
 
-            // Validar si es un reintento en el mismo navegador/máquina en el transcurso del día
-            // (Comentario del usuario #3: no descontar cupos en fallos de red/reintentos del mismo día)
-            const cachedUrl = localStorage.getItem("dl_url_" + CLIENT_ID);
-            const cachedCode = localStorage.getItem("dl_code_" + CLIENT_ID);
-            
-            if (cachedCode === code && cachedUrl) {
-                progressArea.style.display = "block";
-                progressStatus.textContent = "Reintentando descarga segura del instalador...";
-                progressBar.style.width = "50%";
-                progressPercent.textContent = "50%";
-                
-                try {
-                    const a = document.createElement('a');
-                    a.style.display = 'none';
-                    a.href = cachedUrl;
-                    a.download = cachedUrl.substring(cachedUrl.lastIndexOf('/') + 1);
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    
-                    progressBar.style.width = "100%";
-                    progressPercent.textContent = "100%";
-                    progressStatus.textContent = "¡Descarga iniciada con éxito! Revisa tus descargas.";
-                    
-                    setTimeout(() => {
-                        progressArea.style.display = "none";
-                        downloadBtn.disabled = false;
-                    }, 3000);
-                    return;
-                } catch (cachedErr) {
-                    console.warn("Falla en descarga cacheada:", cachedErr);
-                    // Si falla el cache, continuará con el flujo normal de red
-                }
-            }
-
-            // Flujo normal: Llamar a Supabase para autorizar y obtener la URL de descarga segura
+            // Cada descarga SIEMPRE pasa por authorize_download (gatekeeper del servidor)
+            // authorize_download verifica el límite, incrementa el contador y devuelve la URL
             try {
                 progressArea.style.display = "block";
                 progressStatus.textContent = "Autorizando descarga digital segura...";
@@ -1231,6 +1197,9 @@
                             if (rpcResult && rpcResult.status === "success") {
                                 registerSuccess = true;
                                 downloadUrl = rpcResult.download_url;
+                            } else if (rpcResult && rpcResult.status === "max_downloads_reached") {
+                                showError("Ha alcanzado el límite máximo de descargas permitidas. Contacte a soporte técnico.");
+                                fetchDownloadStatus();
                             } else {
                                 showError(rpcResult.message || "La descarga no pudo ser autorizada.");
                             }
@@ -1240,7 +1209,7 @@
                         }
                     } catch (sbErr) {
                         console.error("Supabase error:", sbErr);
-                        showError("Error de comunicación de red segura. Intente de nuevo.");
+                        showError("Error de comunicación de red. Intente de nuevo.");
                     }
                 } else {
                     // Fallback local: Si no hay Supabase configurado, construir la URL de GitHub
@@ -1258,11 +1227,7 @@
                     return;
                 }
 
-                // Guardar en cache local del navegador para permitir reintentos ilimitados el mismo día sin descontar cupos
-                localStorage.setItem("dl_url_" + CLIENT_ID, downloadUrl);
-                localStorage.setItem("dl_code_" + CLIENT_ID, code);
-
-                // 4. Iniciar la descarga clásica nativa (sin restricciones CORS de fetch AJAX)
+                // Iniciar la descarga clásica nativa (inmune a CORS)
                 progressStatus.textContent = "¡Descarga autorizada! Iniciando descarga...";
                 progressBar.style.width = "100%";
                 progressPercent.textContent = "100%";
@@ -1278,7 +1243,7 @@
                     document.body.removeChild(a);
                     progressArea.style.display = "none";
                     downloadBtn.disabled = false;
-                    fetchDownloadStatus(); // Actualiza contador
+                    fetchDownloadStatus(); // Actualiza el contador en tiempo real
                 }, 3000);
 
             } catch (error) {
