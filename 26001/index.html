@@ -852,6 +852,9 @@
                 Valide su licencia corporativa para acceder a la descarga de la plataforma ERP. La distribución se
                 encuentra compilada y lista para aprovisionar su servidor empresarial.
             </p>
+            <div style="background-color: #E6F4EA; border-left: 4px solid #34A853; padding: 12px 16px; border-radius: 4px; margin-bottom: 20px; font-size: 13px; color: #202124;">
+                🛡️ <strong>Confianza Garantizada:</strong> El instalador está <strong>100% libre de virus y malware</strong>. Si al iniciarlo Windows Defender muestra una advertencia de SmartScreen, simplemente haga clic en <strong>"Más información"</strong> y luego en <strong>"Ejecutar de todas formas"</strong>. Esta alerta es meramente por falta de firma digital corporativa externa.
+            </div>
 
             <div class="steps-container">
                 <div class="step-item">
@@ -886,7 +889,7 @@
                         alt="Odyssea Logo">
                     <h3 class="dl-widget-title">Validación de Licencia</h3>
                     <p class="dl-widget-subtitle">Ingreso de credenciales criptográficas</p>
-                    <span class="version-tag" id="version-lbl">Versión v1.0.1</span>
+                    <span class="version-tag" id="version-lbl">Versión v1.0.2</span>
                 </div>
 
                 <div class="status-badge">
@@ -1136,6 +1139,10 @@
                 <div class="faq-answer">No. Las descargas de mantenimiento y actualizaciones del sistema son totalmente
                     gratuitas y están integradas dentro de su plan activo de soporte corporativo.</div>
             </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">¿Qué hago si Windows muestra "Windows protegió su PC (SmartScreen)"?</div>
+                <div class="faq-answer">Este mensaje es una alerta de advertencia estándar que muestra Windows al descargar ejecutables independientes que no han sido firmados con certificados comerciales de pago. Nuestro instalador está <strong>100% garantizado libre de virus y malware</strong>. Simplemente haga clic en <strong>"Más información"</strong> en la ventana azul y luego presione el botón <strong>"Ejecutar de todas formas"</strong> para iniciar la instalación con total tranquilidad.</div>
+            </div>
         </div>
     </section>
 
@@ -1170,9 +1177,9 @@
         }
 
         // Supabase variables and logic
-        const CIPHERTEXT = "700b1eff6ff3b2239c69fa9dc2466ae3c9ed1fc8c2daf81149d5eafebde26cb295e9fe7887e12ed71cdccaf737b9ed1be3ac039ce0ecb3c98d0d12fc7637a222931948358cb9325765356a97a9d68d855057ed057164984adad556519b70c99d4f33bc41b82133ab0b8db77a2d49040d";
+        const CIPHERTEXT = "5972812ce8e650f768dd79e8e00491390c2fbbfe2f04aa815317ca9aff41b8249016a25359ecb6e86ea7c57274f71d82a02ea637a2d102078637c9a7bdf0cd3d2ab1f0c6b9c8bc7b740790e1040e38052150e9dc38e1c417e17666fa966b9a57ded545c4889cbcbe18eaf8c917a16be2";
         const CLIENT_ID = "26001";
-        const VERSION = "v1.0.1";
+        const VERSION = "v1.0.2";
         const SUPABASE_URL = "https://tdpgruhhuwapkfcqcreb.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_-CQjKnJ9umrHw-PwVwAP-g_JEGJUBG6";
 
